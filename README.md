@@ -6,3 +6,7 @@
 
 运行方法(windows)
 搭建好django开发环境后，在manage.py所在路径执行python manage.py runserver命令
+
+测试账号
+1. user_test 密码 12345ssdlh
+2. 管理员 密码 glypassword
