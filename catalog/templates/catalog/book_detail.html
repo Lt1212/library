@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <!--
+    <p>类型: {% for genre in book.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>     
+  -->
+  <h1>{{ book.title }}</h1>
+  <div class="media">
+    <div class="media-left">
+      <img src="{{ MEDIA_URL }}{{ book.image }}" alt="图书封面", width="200px" height="270px">
+    </div>          
+    <div class="media-body">
+      <p>作者: <a href="{% url 'author-detail' book.author.pk %}">{{ book.author }}</a></p> 
+      <p>出版信息: {{ book.imprint }}</p>
+      <p>ISBN: {{ book.isbn }}</p>
+    </div>
+  </div>
+
+  <div style="margin-top:30px">
+    <h4>图书简介</h4>
+    <p>{{ book.summary }}</p>
+  </div>  
+ 
+  <div style="margin-top:30px">
+    <h4 style="margin-bottom:20px">馆藏</h4>
+    {% for copy in book.bookinstance_set.all %}
+    <!--
+      class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}"
+    -->
+    <p>状态：{{ copy.get_status_display }}</p>
+    {% if copy.status == 'o' %}
+      <p>应还日期 {{copy.due_back}}</p>
+    {% endif %}
+    <p class="text-muted">id：{{copy.id}}</p>
+    <hr>
+
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

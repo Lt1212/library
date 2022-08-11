@@ -1,0 +1,51 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <h1>{{ author }} </h1>
+  <div class="media">
+    <div class="media-left">
+      <img src="{{ MEDIA_URL }}{{ author.image }}" alt="作者照片", width="200px" height="270px">
+    </div>          
+    <div class="media-body">
+      <p>性别：{{ author.get_sex }}</p>
+      <p>
+        {% if author.date_of_death %}
+        生卒日期：{{author.date_of_birth}}至{{author.date_of_death}}
+        {% else %}
+        出生日期：{{author.date_of_birth}}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+  <div style="margin-top:30px">
+    <h4>作者简介</h4>
+    <p>{{ author.summary }}</p>
+  </div>
+
+
+  <div style="margin-top:30px">
+    <h4>相关图书</h4>
+
+    <ul class="list-group">
+      {% for book in author.book_set.all %}
+      <li class="list-group-item">
+        <div class="media">
+          <!--
+          <div class="media-left media-middle">
+            <img class="media-object" src="{{ MEDIA_URL }}{{ book.image }}" alt="图书封面" width="60px" height="80px">
+          </div>          
+          -->
+          <div class="media-body">
+            <h4 class="list-group-item-heading">
+              <a href="{% url 'book-detail' book.pk %}">{{book}}</a> (馆藏数量：{{book.bookinstance_set.all.count}})
+            </h4>
+            <p class="list-group-item-text">{{book.summary}}</p>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>    
+  </div>
+</div>
+{% endblock %}

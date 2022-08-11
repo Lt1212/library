@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+    <div div class="container-fluid">
+        <h1>续借</h1>
+        <p>书名：{{bookinst.book.title}}</p>
+        <p>出版信息：{{bookinst.book.imprint}}</p>
+        <p>复本ID：{{ bookinst.id }}</p>
+        <p>借书人: {{bookinst.borrower}}</p>
+        <p {% if bookinst.is_overdue %} class="text-danger"{% endif %}>应还期限: {{bookinst.due_back}}</p>
+    </div>
+   
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-1"><label>新的归还期限</label></div>
+                <div class="col-md-2">
+                    <div>{{ form.renewal_date}}</div>
+                    <div>{{ form.renewal_date.help_text}}</div>
+                </div>
+                <div class="col-md-1"><input type="submit" value="Submit"></div>
+            </div>               
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+<!--主页-->
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="container">
+  <h1>本地图书馆主页</h1>
+  <p class="lead">这是一个使用Django框架搭建的本地图书馆项目，感谢<a href="https://developer.mozilla.org/zh-CN/docs/Learn/Server-side/Django/Tutorial_local_library_website">MDN的本地图书馆网站教程</a>提供的帮助</p>
+  <p>本图书馆有以下资源</p>
+  <ul class="list-group">
+    <li class="list-group-item"><strong>图书</strong><span class="badge">{{ num_books }}本</span></li>
+    <li class="list-group-item"><strong>馆藏复本</strong><span class="badge">{{ num_instances }}本</span> </li>
+    <li class="list-group-item"><strong>可借复本</strong><span class="badge">{{ num_instances_available }}本</span></li>
+    <li class="list-group-item"><strong>收录作者</strong><span class="badge">{{ num_authors }}名</span></li>
+  </ul>
+</div>
+  <!--
+  <p>访问次数 {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
+  -->
+{% endblock %}

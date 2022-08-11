@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <h1>外借图书</h1>
+
+  {% if bookinstance_list %}
+  <ul class="list-group" >
+
+    {% for bookinst in bookinstance_list %}
+    <li class="list-group-item">
+      <div class="media">
+        <div class="media-body {% if bookinst.is_overdue %}text-danger{% endif %}">
+          <h4 class="list-group-item-heading">{{bookinst.book.title}}</h4>
+          <p class="list-group-item-text">借书人：{{ bookinst.borrower }}</p>
+          <p class="list-group-item-text">应还期限：{{ bookinst.due_back }}</p>
+          <p class="list-group-item-text">复本ID：{{ bookinst.id }}</p>
+        </div>
+        <div class="media-right media-middle">
+          <a href="{% url 'renew-book-librarian' bookinst.id %}"><button type="button" class="btn btn-success">续借</button></a>
+        </div>
+      </div>
+    </li>
+
+    {% endfor %}
+  </ul>
+
+  {% else %}
+    <p>暂时没有图书外借</p>
+  {% endif %}  
+</div>
+
+{% endblock %}

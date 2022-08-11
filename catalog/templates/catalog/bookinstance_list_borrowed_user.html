@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+  <h1>借阅书目</h1>
+
+  {% if bookinstance_list %}
+  <ul class="list-group">
+    {% for bookinst in bookinstance_list %}
+    <li class="{% if bookinst.is_overdue %}text-danger{% endif %} list-group-item">
+      <div class="media">
+        <div  class="media-body">
+            <h4 class="list-group-item-heading">
+              <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a>
+            </h4>
+            <p class="list-group-item-text">应还期限：{{ bookinst.due_back }}</p>     
+        </div>
+        <div class="media-right media-middle">
+          {% if bookinst.is_overdue %}
+            <button class="btn btn-danger disabled">逾期</button>
+          {% else %}
+            <form action="" method="post">
+            {% csrf_token %}
+              <input hidden name="bookinst_id" value="{{ bookinst.id }}">
+              <input class="btn btn-success" type="submit" value="还书">
+              <!--<button class="btn btn-success" id="return_book">还书</button>-->   
+            </form>
+          {% endif %}
+        </div>    
+      </div>
+    </li>       
+
+    {% endfor %}
+  </ul>
+
+  {% else %}
+    <p>未查询到借阅信息</p>
+  {% endif %}  
+</div>
+
+{% endblock %}

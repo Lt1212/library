@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <div class="container-fluid">
+    <h1>图书列表</h1>
+
+    {% if book_list %}
+    <ul class="list-group">
+
+      {% for book in book_list %}
+      <li class="list-group-item">
+        <div class="media">
+          <div class="media-left media-middle">
+            <img class="media-object" src="{{ MEDIA_URL }}{{ book.image }}" alt="图书封面" width="60px" height="80px">
+          </div>
+          <div class="media-body">
+            <a href="{{ book.get_absolute_url }}">
+              <h4 class="list-group-item-heading">{{ book.title }}</h4>
+            </a>
+            <p class="list-group-item-text">作者：{{book.author}}<br>出版信息：{{ book.imprint }}</p>
+          </div>
+        </div>
+      </li>          
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>图书馆内暂时还没有图书</p>
+    {% endif %}    
+  </div>
+
+{% endblock %}

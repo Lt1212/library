@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <h1>作者列表</h1>
+
+  {% if author_list %}
+    <ul class="list-group">
+
+    {% for author in author_list %}
+      <li class="list-group-item">
+        <div class="media">
+          <div class="media-left media-middle ">
+            <img class="media-object" src="{{ MEDIA_URL }}{{ author.image }}" alt="作者照片" width="60px" height="80px">
+          </div>
+          <div class="media-body">
+            <a href="{{ author.get_absolute_url }}">
+              <h4 class="list-group-item-heading">{{ author.name }}</h4>
+            </a>
+            <p class="list-group-item-text">
+              {% if author.date_of_death %}
+              生卒日期：{{author.date_of_birth}}至{{author.date_of_death}}
+              {% else %}
+              出生日期：{{author.date_of_birth}}
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </li>      
+    {% endfor %}
+
+  </ul>
+  {% else %}
+    <p>暂时没有收录作者信息</p>
+  {% endif %}  
+</div>
+
+        
+        
+        
+{% endblock %}

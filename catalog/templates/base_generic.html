@@ -1,0 +1,123 @@
+<!--基础页面模版-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  {% block title %}<title>Local Library</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- 自定义的css 
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  -->
+
+</head>
+<body>
+  <!--导航部分-->
+  {% block nav %}
+  <!--
+    .navbar-default——指定导航条组件为默认主题
+    .navbar-fixed-top——设置导航条组件固定在顶部
+  -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <!--
+        .navbar-header——主要指定div元素为导航条组件包裹品牌图标及切换按钮
+      -->
+      <div class="navbar-header">
+        <!--
+          .navbar-toggle——设置button元素为导航条组件的切换钮
+          .collapsed——设置button元素为在视口小于768px时才显示
+        -->
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <!--
+            sr-only是screen reader only的意思，盲人看的时候会把Toggle Navigation读出来。
+            这个时候盲人就知道他在看的地方是一个响应式导航
+          -->
+          <span class="sr-only">Toggle navigation</span>
+          <!--汉堡按钮(三横，看起来像汉堡)-->
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!--
+          .navbar-brand会让文本更大一号
+          .navbar-brand——设置导航条组件内的品牌图标
+        -->
+        <a class="navbar-brand" href="#">本地图书馆</a>
+      </div>
+      <!--
+        响应式，窗口宽度不够时折叠，点击汉堡按钮显示或隐藏
+        .collapse——设置div元素为视口大于768px时显示
+      -->
+      <div id="navbar" class="navbar-collapse collapse">
+        <!--
+          .navbar-nav——设置ul为导航条组件内的列表元素
+          .navbar-left——设置导航条内元素向左对齐
+          .navbar-right——设置导航条内元素向右对齐
+        -->
+        <ul class="nav navbar-nav">
+          <li ><a href="{% url 'index' %}">主页</a></li>
+          <li ><a href="{% url 'books' %}">藏书全览</a></li>
+          <li ><a href="{% url 'authors' %}">作者全览</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+          <!--
+            <li>User: {{ user.get_username }}</li>
+          -->
+            <li><a href="{% url 'my-borrowed' %}">我的借阅</a></li>
+            {% if user.is_staff %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">管理员 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'all-borrowed' %}">已借出的图书</a></li>
+                </ul>
+              </li>
+            {% endif %}
+              <!--
+                <li><a href="{% url 'logout'%}?next={{request.path}}">登出</a></li>
+              -->
+            <li><a href="{% url 'logout'%}?next=/catalog/">登出</a></li>
+          {% else %}
+          <!--
+            <li><a href="{% url 'login'%}?next={{request.path}}">登录</a></li>
+          -->
+            <li><a href="{% url 'login'%}?next=/catalog/">登录</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="page-header"></div>
+  {% endblock %}
+  <!--拓展部分-->
+  {% block content %}{% endblock %}
+  <div class="page-header"></div>
+  <!--分页-->
+  {% block pagination %}
+    {% if is_paginated %}
+      <nav class="navbar navbar-default navbar-fixed-bottom">
+        <ul class="pager">
+          {% if page_obj.has_previous %}
+            <li class="previous"><a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&larr;</span>上一页</a></li>
+          {% else %}
+            <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span>上一页</a></li>        
+          {% endif %}
+          <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+            <li class="next"><a href="{{ request.path }}?page={{ page_obj.next_page_number }}">下一页<span aria-hidden="true">&rarr;</span></a></li>
+          {% else %}
+            <li class="next disabled"><a href="#">下一页<span aria-hidden="true">&rarr;</span></a></li>
+          {% endif %}
+        </ul>       
+      </nav>
+    {% endif %}
+  {% endblock %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </script> 
+</body>
+</html>
